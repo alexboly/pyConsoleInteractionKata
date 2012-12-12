@@ -15,7 +15,7 @@ class ShapeInput():
 
 class ConsoleInteractionTests(TestCase):
     
-    def testAsksForShape(self):
+    def testPrintsMessageWhenAskingForShape(self):
         consoleMock = mock()
         shapeInput = ShapeInput(consoleMock)
         
