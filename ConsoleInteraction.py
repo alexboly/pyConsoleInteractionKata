@@ -6,6 +6,7 @@ from mockito import *
 class ShapeInput():
 
     message = "Shape: (C)ircle or (R)ectangle?"
+    circleRadiusMessage = "Circle radius is: "
     
     def __init__(self, console):
         self.console = console
@@ -13,7 +14,7 @@ class ShapeInput():
     def askForShape(self):
         self.console.printMessage(self.message)
         self.console.read()
-        self.console.printMessage("Circle radius is: ")
+        self.console.printMessage(self.circleRadiusMessage)
 
 class ConsoleInteractionTests(TestCase):
 
@@ -34,4 +35,4 @@ class ConsoleInteractionTests(TestCase):
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock).printMessage("Circle radius is: ")
+        verify(self.consoleMock).printMessage(self.shapeInput.circleRadiusMessage)
