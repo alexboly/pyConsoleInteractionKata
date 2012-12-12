@@ -13,6 +13,7 @@ class ShapeInput():
     def askForShape(self):
         self.console.printMessage(self.message)
         self.console.read()
+        self.console.printMessage("Circle radius is: ")
 
 class ConsoleInteractionTests(TestCase):
 
@@ -27,3 +28,10 @@ class ConsoleInteractionTests(TestCase):
     def testRequestsInputFromConsole(self):
         self.shapeInput.askForShape()
         verify(self.consoleMock).read()
+
+    def testAsksForRadiusIfCircle(self):
+        when(self.consoleMock).read().thenReturn('C')
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Circle radius is: ")
