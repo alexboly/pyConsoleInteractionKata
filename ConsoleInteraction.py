@@ -7,14 +7,19 @@ class ShapeInput():
 
     message = "Shape: (C)ircle or (R)ectangle?"
     circleRadiusMessage = "Circle radius is: "
+    rectangleWidthMessage = "Rectangle width is: "
     
     def __init__(self, console):
         self.console = console
 
     def askForShape(self):
         self.console.printMessage(self.message)
-        self.console.read()
-        self.console.printMessage(self.circleRadiusMessage)
+        shapeType = self.console.read()
+        
+        if shapeType == 'R':
+            self.console.printMessage(self.rectangleWidthMessage)
+        else:
+            self.console.printMessage(self.circleRadiusMessage)
 
 class ConsoleInteractionTests(TestCase):
 
@@ -36,3 +41,10 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage(self.shapeInput.circleRadiusMessage)
+        
+    def testAsksForWidthIfRectangle(self):
+        when(self.consoleMock).read().thenReturn('R')
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Rectangle width is: ")
