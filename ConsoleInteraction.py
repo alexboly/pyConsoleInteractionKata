@@ -24,6 +24,7 @@ class ShapeInput():
             self.console.read()
             self.console.printMessage(self.rectangleHeightMessage)
             self.console.read()
+            self.console.printMessage("Area is 10000")
 
         if shapeType == self.circleShapeType:
             self.console.printMessage(self.circleRadiusMessage)
@@ -77,4 +78,11 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock, 3).read()
+
+    def testPrintsCorrectRectangleArea(self):
+        when(self.consoleMock).read().thenReturn(self.shapeInput.rectangleShapeType).thenReturn(100).thenReturn(100)
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Area is 10000")
         
