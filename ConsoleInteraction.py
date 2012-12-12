@@ -27,6 +27,7 @@ class ShapeInput():
 
         if shapeType == self.circleShapeType:
             self.console.printMessage(self.circleRadiusMessage)
+            self.console.read()
 
 class ConsoleInteractionTests(TestCase):
 
@@ -48,6 +49,13 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage(self.shapeInput.circleRadiusMessage)
+
+    def testReadsRadiusOfCircle(self):
+        when(self.consoleMock).read().thenReturn(self.shapeInput.circleShapeType)
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock, 2).read()
         
     def testAsksForWidthIfRectangle(self):
         when(self.consoleMock).read().thenReturn(self.shapeInput.rectangleShapeType)
