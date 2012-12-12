@@ -12,6 +12,7 @@ class ShapeInput():
 
     def askForShape(self):
         self.console.printMessage(self.message)
+        self.console.read()
 
 class ConsoleInteractionTests(TestCase):
     
@@ -23,3 +24,10 @@ class ConsoleInteractionTests(TestCase):
         
         verify(consoleMock).printMessage(shapeInput.message)
         
+    def testRequestsInputFromConsole(self):
+        consoleMock = mock()
+        shapeInput = ShapeInput(consoleMock)
+        
+        shapeInput.askForShape()
+        
+        verify(consoleMock).read()
