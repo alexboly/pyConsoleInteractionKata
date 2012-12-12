@@ -18,17 +18,12 @@ class ConsoleInteractionTests(TestCase):
 
     def setUp(self):
         self.consoleMock = mock()
+        self.shapeInput = ShapeInput(self.consoleMock)
     
     def testPrintsMessageWhenAskingForShape(self):
-        shapeInput = ShapeInput(self.consoleMock)
-        
-        shapeInput.askForShape()
-        
-        verify(self.consoleMock).printMessage(shapeInput.message)
+        self.shapeInput.askForShape()
+        verify(self.consoleMock).printMessage(self.shapeInput.message)
         
     def testRequestsInputFromConsole(self):
-        shapeInput = ShapeInput(self.consoleMock)
-        
-        shapeInput.askForShape()
-        
+        self.shapeInput.askForShape()
         verify(self.consoleMock).read()
