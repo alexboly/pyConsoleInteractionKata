@@ -17,19 +17,11 @@ class Rectangle:
     
     def circumference(self):
         return 2 * (self.width + self.height)
-
-    @classmethod
-    def readRectangleWidth(self, console):
-        return console.readFloat(self.rectangleWidthMessage)
-
-    @classmethod
-    def readRectangleHeight(self, console):
-        return console.readFloat(self.rectangleHeightMessage)
     
     @classmethod
     def read(self, console):
-        width = Rectangle.readRectangleWidth(console)
-        height = Rectangle.readRectangleHeight(console)
+        width = console.readFloat(self.rectangleWidthMessage)
+        height = console.readFloat(self.rectangleHeightMessage)
         return Rectangle(width, height)
 
 class Circle:
@@ -47,12 +39,8 @@ class Circle:
         return 2 * 3.14 * self.radius
 
     @classmethod
-    def readCircleRadius(self, console):
-        return console.readFloat(self.circleRadiusMessage)
-    
-    @classmethod
     def read(self, console):
-        radius = self.readCircleRadius(console)
+        radius = console.readFloat(self.circleRadiusMessage)
         return Circle(radius)
 
 class ShapeInput():
@@ -62,26 +50,28 @@ class ShapeInput():
     def __init__(self, console):
         self.console = console
 
-    def readCircleRadius(self):
-        return self.console.readFloat(self.circleRadiusMessage)
 
-    def computeCircleArea(self, radius):
-        return 3.14 * radius * radius
-
-    def computeCircleCircumference(self, radius):
-        return 2 * 3.14 * radius
-
-    def askForShape(self):
-        shapeType = self.console.readString(self.message)
-
+    def readShapeDetails(self, shapeType):
         if shapeType == Rectangle.rectangleShapeType:
             shape = Rectangle.read(self.console)
-
         if shapeType == Circle.circleShapeType:
             shape = Circle.read(self.console)
+        return shape
 
-        self.console.printMessage("Area is {0:.2f}".format(shape.area()))
-        self.console.printMessage("Circumference is {0:.2f}".format(shape.circumference()))
+    def readShapeType(self):
+        return self.console.readString(self.message)
+
+    def printArea(self, shape):
+        return self.console.printMessage("Area is {0:.2f}".format(shape.area()))
+
+    def printCircumference(self, shape):
+        return self.console.printMessage("Circumference is {0:.2f}".format(shape.circumference()))
+
+    def printShapeAreaAndCircumference(self):
+        shapeType = self.readShapeType()
+        shape = self.readShapeDetails(shapeType)
+        self.printArea(shape)
+        self.printCircumference(shape)
 
 class Console:
    
@@ -99,7 +89,7 @@ class Console:
 def main():
     console = Console()
     shapeInput = ShapeInput(console)
-    shapeInput.askForShape()
+    shapeInput.printShapeAreaAndCircumference()
 
 class ConsoleInteractionTests(TestCase):
 
@@ -119,42 +109,42 @@ class ConsoleInteractionTests(TestCase):
     def testPrintsCorrectRectangleArea(self):
         self.consoleMockForRectangle(100, 100)
         
-        self.shapeInput.askForShape()
+        self.shapeInput.printShapeAreaAndCircumference()
         
         verify(self.consoleMock).printMessage("Area is 10000.00")
         
     def testPrintsSecondCorrectRectangleArea(self):
         self.consoleMockForRectangle(10, 100)
         
-        self.shapeInput.askForShape()
+        self.shapeInput.printShapeAreaAndCircumference()
         
         verify(self.consoleMock).printMessage("Area is 1000.00")
         
     def testPrintsCorrectCircleArea(self):
         self.consoleMockForCircle(100)
         
-        self.shapeInput.askForShape()
+        self.shapeInput.printShapeAreaAndCircumference()
         
         verify(self.consoleMock).printMessage("Area is 31400.00")
 
     def testPrintsSecondCorrectCircleArea(self):
         self.consoleMockForCircle(200)
         
-        self.shapeInput.askForShape()
+        self.shapeInput.printShapeAreaAndCircumference()
         
         verify(self.consoleMock).printMessage("Area is 125600.00")
 
     def testPrintsRectangleCircumference(self):
         self.consoleMockForRectangle(100, 100)
         
-        self.shapeInput.askForShape()
+        self.shapeInput.printShapeAreaAndCircumference()
         
         verify(self.consoleMock).printMessage("Circumference is 400.00")
 
     def testPrintsCircleCircumference(self):
         self.consoleMockForCircle(100)
         
-        self.shapeInput.askForShape()
+        self.shapeInput.printShapeAreaAndCircumference()
         
         verify(self.consoleMock).printMessage("Circumference is 628.00")
 
