@@ -1,6 +1,7 @@
 # See https://sites.google.com/site/tddproblems/all-problems-1/Console-interaction for problem description
 from mockito import *
 from unittest.case import TestCase
+import math
 
 
 class ShapeInput():
@@ -28,7 +29,8 @@ class ShapeInput():
 
         if shapeType == self.circleShapeType:
             self.console.printMessage(self.circleRadiusMessage)
-            self.console.readInt()
+            radius = self.console.readInt()
+            self.console.printMessage("Area is {0:.2f}".format(3.14 * radius * radius))
 
 class ConsoleInteractionTests(TestCase):
 
@@ -46,6 +48,7 @@ class ConsoleInteractionTests(TestCase):
 
     def testAsksForRadiusIfCircle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100)
         
         self.shapeInput.askForShape()
         
@@ -53,6 +56,7 @@ class ConsoleInteractionTests(TestCase):
 
     def testReadsRadiusOfCircle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100)
         
         self.shapeInput.askForShape()
         
@@ -97,3 +101,11 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage("Area is 1000")
+        
+    def testPrintsCorrectCircleArea(self):
+        when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100)
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Area is 31400.00")
