@@ -17,19 +17,46 @@ class ShapeInput():
     def __init__(self, console):
         self.console = console
 
+
+    def readCircleRadius(self):
+        return self.console.readFloat(self.circleRadiusMessage)
+
+
+    def computeCircleArea(self, radius):
+        return 3.14 * radius * radius
+
+    def computeCircleCircumference(self, radius):
+        return 2 * 3.14 * radius
+
+
+    def readRectangleWidth(self):
+        return self.console.readFloat(self.rectangleWidthMessage)
+
+
+    def readRectangleHeight(self):
+        return self.console.readFloat(self.rectangleHeightMessage)
+
+
+    def computeRectangleArea(self, width, height):
+        return width * height
+
+
+    def computeRectangleCircumference(self, width, height):
+        return 2 * (width + height)
+
     def askForShape(self):
         shapeType = self.console.readString(self.message)
 
         if shapeType == self.rectangleShapeType:
-            width = self.console.readFloat(self.rectangleWidthMessage)
-            height = self.console.readFloat(self.rectangleHeightMessage)
-            area = width * height
-            circumference = 2 * (width + height)
+            width = self.readRectangleWidth()
+            height = self.readRectangleHeight()
+            area = self.computeRectangleArea(width, height)
+            circumference = self.computeRectangleCircumference(width, height)
 
         if shapeType == self.circleShapeType:
-            radius = self.console.readFloat(self.circleRadiusMessage)
-            area = 3.14 * radius * radius
-            circumference = 2 * 3.14 * radius
+            radius = self.readCircleRadius()
+            area = self.computeCircleArea(radius)
+            circumference = self.computeCircleCircumference(radius)
 
         self.console.printMessage("Area is {0:.2f}".format(area))
         self.console.printMessage("Circumference is {0:.2f}".format(circumference))
