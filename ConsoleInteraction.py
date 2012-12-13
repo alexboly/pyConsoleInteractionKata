@@ -1,8 +1,6 @@
 # See https://sites.google.com/site/tddproblems/all-problems-1/Console-interaction for problem description
 from mockito import *
 from unittest.case import TestCase
-import os
-from google.protobuf.text_format import PrintMessage
 
 class Rectangle:
 
@@ -34,12 +32,32 @@ class Rectangle:
         height = Rectangle.readRectangleHeight(console)
         return Rectangle(width, height)
 
+class Circle:
+
+    circleShapeType = 'C'
+    circleRadiusMessage = "Circle radius is: "
+    
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14 * self.radius * self.radius
+    
+    def circumference(self):
+        return 2 * 3.14 * self.radius
+
+    @classmethod
+    def readCircleRadius(self, console):
+        return console.readFloat(self.circleRadiusMessage)
+    
+    @classmethod
+    def read(self, console):
+        radius = self.readCircleRadius(console)
+        return Circle(radius)
 
 class ShapeInput():
 
     message = "Shape: (C)ircle or (R)ectangle?"
-    circleRadiusMessage = "Circle radius is: "
-    circleShapeType = 'C'
     
     def __init__(self, console):
         self.console = console
@@ -61,10 +79,10 @@ class ShapeInput():
             area = rectangle.area()
             circumference = rectangle.circumference()
 
-        if shapeType == self.circleShapeType:
-            radius = self.readCircleRadius()
-            area = self.computeCircleArea(radius)
-            circumference = self.computeCircleCircumference(radius)
+        if shapeType == Circle.circleShapeType:
+            circle = Circle.read(self.console)
+            area = circle.area()
+            circumference = circle.circumference()
 
         self.console.printMessage("Area is {0:.2f}".format(area))
         self.console.printMessage("Circumference is {0:.2f}".format(circumference))
@@ -94,8 +112,8 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput = ShapeInput(self.consoleMock)
         
     def consoleMockForCircle(self, radius):
-        when(self.consoleMock).readString(self.shapeInput.message).thenReturn(self.shapeInput.circleShapeType)
-        when(self.consoleMock).readFloat(self.shapeInput.circleRadiusMessage).thenReturn(radius)
+        when(self.consoleMock).readString(self.shapeInput.message).thenReturn(Circle.circleShapeType)
+        when(self.consoleMock).readFloat(Circle.circleRadiusMessage).thenReturn(radius)
 
     def consoleMockForRectangle(self, width, height):
         when(self.consoleMock).readString(self.shapeInput.message).thenReturn(Rectangle.rectangleShapeType)
