@@ -32,6 +32,7 @@ class ShapeInput():
             self.console.printMessage(self.circleRadiusMessage)
             radius = self.console.readFloat()
             self.console.printMessage("Area is {0:.2f}".format(3.14 * radius * radius))
+            self.console.printMessage("Circumference is {0:.2f}".format(2 * 3.14 * radius))
 
 class Console:
    
@@ -123,6 +124,13 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage("Circumference is 400")
+
+    def testPrintsCircleCircumference(self):
+        self.consoleMockForCircle(100)
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Circumference is 628.00")
 
 if __name__ == "__main__":
     main()
