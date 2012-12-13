@@ -22,14 +22,14 @@ class ShapeInput():
         
         if shapeType == self.rectangleShapeType:
             self.console.printMessage(self.rectangleWidthMessage)
-            width = self.console.readInt()
+            width = self.console.readFloat()
             self.console.printMessage(self.rectangleHeightMessage)
-            height = self.console.readInt()
-            self.console.printMessage("Area is {0}".format(width * height))
+            height = self.console.readFloat()
+            self.console.printMessage("Area is {0:.2f}".format(width * height))
 
         if shapeType == self.circleShapeType:
             self.console.printMessage(self.circleRadiusMessage)
-            radius = self.console.readInt()
+            radius = self.console.readFloat()
             self.console.printMessage("Area is {0:.2f}".format(3.14 * radius * radius))
 
 class ConsoleInteractionTests(TestCase):
@@ -48,7 +48,7 @@ class ConsoleInteractionTests(TestCase):
 
     def testAsksForRadiusIfCircle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100)
+        when(self.consoleMock).readFloat().thenReturn(100)
         
         self.shapeInput.askForShape()
         
@@ -56,15 +56,15 @@ class ConsoleInteractionTests(TestCase):
 
     def testReadsRadiusOfCircle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100)
+        when(self.consoleMock).readFloat().thenReturn(100)
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock).readInt()
+        verify(self.consoleMock).readFloat()
         
     def testAsksForWidthIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100).thenReturn(10)
+        when(self.consoleMock).readFloat().thenReturn(100).thenReturn(10)
         
         self.shapeInput.askForShape()
         
@@ -72,7 +72,7 @@ class ConsoleInteractionTests(TestCase):
         
     def testAsksForHeightIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100).thenReturn(10)
+        when(self.consoleMock).readFloat().thenReturn(100).thenReturn(10)
         
         self.shapeInput.askForShape()
         
@@ -80,31 +80,31 @@ class ConsoleInteractionTests(TestCase):
         
     def testReadsWidthAndHeightIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100).thenReturn(10)
+        when(self.consoleMock).readFloat().thenReturn(100).thenReturn(10)
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock, 2).readInt()
+        verify(self.consoleMock, 2).readFloat()
 
     def testPrintsCorrectRectangleArea(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100).thenReturn(100)
+        when(self.consoleMock).readFloat().thenReturn(100).thenReturn(100)
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock).printMessage("Area is 10000")
+        verify(self.consoleMock).printMessage("Area is 10000.00")
         
     def testPrintsSecondCorrectRectangleArea(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readInt().thenReturn(10).thenReturn(100)
+        when(self.consoleMock).readFloat().thenReturn(10).thenReturn(100)
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock).printMessage("Area is 1000")
+        verify(self.consoleMock).printMessage("Area is 1000.00")
         
     def testPrintsCorrectCircleArea(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
-        when(self.consoleMock).readInt().thenReturn(100)
+        when(self.consoleMock).readFloat().thenReturn(100)
         
         self.shapeInput.askForShape()
         
