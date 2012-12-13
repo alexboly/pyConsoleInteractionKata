@@ -4,23 +4,48 @@ from unittest.case import TestCase
 import os
 from google.protobuf.text_format import PrintMessage
 
+class Rectangle:
+
+    rectangleShapeType = 'R'
+    rectangleWidthMessage = "Rectangle width is: "
+    rectangleHeightMessage = "Rectangle height is:"
+    
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+    
+    def circumference(self):
+        return 2 * (self.width + self.height)
+
+    @classmethod
+    def readRectangleWidth(self, console):
+        return console.readFloat(self.rectangleWidthMessage)
+
+    @classmethod
+    def readRectangleHeight(self, console):
+        return console.readFloat(self.rectangleHeightMessage)
+    
+    @classmethod
+    def read(self, console):
+        width = Rectangle.readRectangleWidth(console)
+        height = Rectangle.readRectangleHeight(console)
+        return Rectangle(width, height)
+
 
 class ShapeInput():
 
     message = "Shape: (C)ircle or (R)ectangle?"
     circleRadiusMessage = "Circle radius is: "
-    rectangleWidthMessage = "Rectangle width is: "
-    rectangleShapeType = 'R'
     circleShapeType = 'C'
-    rectangleHeightMessage = "Rectangle height is:"
     
     def __init__(self, console):
         self.console = console
 
-
     def readCircleRadius(self):
         return self.console.readFloat(self.circleRadiusMessage)
-
 
     def computeCircleArea(self, radius):
         return 3.14 * radius * radius
@@ -28,30 +53,13 @@ class ShapeInput():
     def computeCircleCircumference(self, radius):
         return 2 * 3.14 * radius
 
-
-    def readRectangleWidth(self):
-        return self.console.readFloat(self.rectangleWidthMessage)
-
-
-    def readRectangleHeight(self):
-        return self.console.readFloat(self.rectangleHeightMessage)
-
-
-    def computeRectangleArea(self, width, height):
-        return width * height
-
-
-    def computeRectangleCircumference(self, width, height):
-        return 2 * (width + height)
-
     def askForShape(self):
         shapeType = self.console.readString(self.message)
 
-        if shapeType == self.rectangleShapeType:
-            width = self.readRectangleWidth()
-            height = self.readRectangleHeight()
-            area = self.computeRectangleArea(width, height)
-            circumference = self.computeRectangleCircumference(width, height)
+        if shapeType == Rectangle.rectangleShapeType:
+            rectangle = Rectangle.read(self.console)
+            area = rectangle.area()
+            circumference = rectangle.circumference()
 
         if shapeType == self.circleShapeType:
             radius = self.readCircleRadius()
@@ -90,9 +98,9 @@ class ConsoleInteractionTests(TestCase):
         when(self.consoleMock).readFloat(self.shapeInput.circleRadiusMessage).thenReturn(radius)
 
     def consoleMockForRectangle(self, width, height):
-        when(self.consoleMock).readString(self.shapeInput.message).thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readFloat(self.shapeInput.rectangleWidthMessage).thenReturn(width)
-        when(self.consoleMock).readFloat(self.shapeInput.rectangleHeightMessage).thenReturn(height)
+        when(self.consoleMock).readString(self.shapeInput.message).thenReturn(Rectangle.rectangleShapeType)
+        when(self.consoleMock).readFloat(Rectangle.rectangleWidthMessage).thenReturn(width)
+        when(self.consoleMock).readFloat(Rectangle.rectangleHeightMessage).thenReturn(height)
 
     def testPrintsCorrectRectangleArea(self):
         self.consoleMockForRectangle(100, 100)
