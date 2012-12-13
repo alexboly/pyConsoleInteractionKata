@@ -53,14 +53,6 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage(self.shapeInput.circleRadiusMessage)
-
-    def testReadsRadiusOfCircle(self):
-        when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
-        when(self.consoleMock).readFloat().thenReturn(100)
-        
-        self.shapeInput.askForShape()
-        
-        verify(self.consoleMock).readFloat()
         
     def testAsksForWidthIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
@@ -78,14 +70,6 @@ class ConsoleInteractionTests(TestCase):
         
         verify(self.consoleMock).printMessage(self.shapeInput.rectangleHeightMessage)
         
-    def testReadsWidthAndHeightIfRectangle(self):
-        when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
-        when(self.consoleMock).readFloat().thenReturn(100).thenReturn(10)
-        
-        self.shapeInput.askForShape()
-        
-        verify(self.consoleMock, 2).readFloat()
-
     def testPrintsCorrectRectangleArea(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
         when(self.consoleMock).readFloat().thenReturn(100).thenReturn(100)
