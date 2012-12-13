@@ -1,6 +1,7 @@
 # See https://sites.google.com/site/tddproblems/all-problems-1/Console-interaction for problem description
 from mockito import *
 from unittest.case import TestCase
+import os
 
 
 class ShapeInput():
@@ -30,6 +31,22 @@ class ShapeInput():
             self.console.printMessage(self.circleRadiusMessage)
             radius = self.console.readFloat()
             self.console.printMessage("Area is {0:.2f}".format(3.14 * radius * radius))
+
+class Console:
+   
+    def readString(self):
+        return raw_input()
+    
+    def readFloat(self):
+        return float(raw_input())
+    
+    def printMessage(self, message):
+        print message
+
+def main():
+    console = Console()
+    shapeInput = ShapeInput(console)
+    shapeInput.askForShape()
 
 class ConsoleInteractionTests(TestCase):
 
@@ -98,3 +115,7 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage("Area is 125600.00")
+
+
+if __name__ == "__main__":
+    main()
