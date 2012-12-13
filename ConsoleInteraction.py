@@ -22,8 +22,7 @@ class ShapeInput():
         
         if shapeType == self.rectangleShapeType:
             width = self.console.readFloat(self.rectangleWidthMessage)
-            self.console.printMessage(self.rectangleHeightMessage)
-            height = self.console.readFloat()
+            height = self.console.readFloat(self.rectangleHeightMessage)
             self.console.printMessage("Area is {0:.2f}".format(width * height))
             self.console.printMessage("Circumference is {0}".format(2 * (width + height)))
 
@@ -63,15 +62,8 @@ class ConsoleInteractionTests(TestCase):
     def consoleMockForRectangle(self, width, height):
         when(self.consoleMock).readString(self.shapeInput.message).thenReturn(self.shapeInput.rectangleShapeType)
         when(self.consoleMock).readFloat(self.shapeInput.rectangleWidthMessage).thenReturn(width)
-        when(self.consoleMock).readFloat().thenReturn(height)
+        when(self.consoleMock).readFloat(self.shapeInput.rectangleHeightMessage).thenReturn(height)
 
-    def testAsksForHeightIfRectangle(self):
-        self.consoleMockForRectangle(100, 10)
-        
-        self.shapeInput.askForShape()
-        
-        verify(self.consoleMock).printMessage(self.shapeInput.rectangleHeightMessage)
-        
     def testPrintsCorrectRectangleArea(self):
         self.consoleMockForRectangle(100, 100)
         
