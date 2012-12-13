@@ -21,10 +21,10 @@ class ShapeInput():
         
         if shapeType == self.rectangleShapeType:
             self.console.printMessage(self.rectangleWidthMessage)
-            self.console.readInt()
+            width = self.console.readInt()
             self.console.printMessage(self.rectangleHeightMessage)
-            self.console.readInt()
-            self.console.printMessage("Area is 10000")
+            height = self.console.readInt()
+            self.console.printMessage("Area is {0}".format(width * height))
 
         if shapeType == self.circleShapeType:
             self.console.printMessage(self.circleRadiusMessage)
@@ -60,6 +60,7 @@ class ConsoleInteractionTests(TestCase):
         
     def testAsksForWidthIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100).thenReturn(10)
         
         self.shapeInput.askForShape()
         
@@ -67,6 +68,7 @@ class ConsoleInteractionTests(TestCase):
         
     def testAsksForHeightIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100).thenReturn(10)
         
         self.shapeInput.askForShape()
         
@@ -74,6 +76,7 @@ class ConsoleInteractionTests(TestCase):
         
     def testReadsWidthAndHeightIfRectangle(self):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100).thenReturn(10)
         
         self.shapeInput.askForShape()
         
@@ -85,4 +88,12 @@ class ConsoleInteractionTests(TestCase):
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock).printMessage("Area is 10000")        
+        verify(self.consoleMock).printMessage("Area is 10000")
+        
+    def testPrintsSecondCorrectRectangleArea(self):
+        when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
+        when(self.consoleMock).readInt().thenReturn(10).thenReturn(100)
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Area is 1000")
