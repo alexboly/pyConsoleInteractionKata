@@ -2,6 +2,7 @@
 from mockito import *
 from unittest.case import TestCase
 import os
+from google.protobuf.text_format import PrintMessage
 
 
 class ShapeInput():
@@ -29,8 +30,7 @@ class ShapeInput():
             self.console.printMessage("Circumference is {0}".format(2 * (width + height)))
 
         if shapeType == self.circleShapeType:
-            self.console.printMessage(self.circleRadiusMessage)
-            radius = self.console.readFloat()
+            radius = self.console.readFloat(self.circleRadiusMessage)
             self.console.printMessage("Area is {0:.2f}".format(3.14 * radius * radius))
             self.console.printMessage("Circumference is {0:.2f}".format(2 * 3.14 * radius))
 
@@ -39,7 +39,8 @@ class Console:
     def readString(self):
         return raw_input()
     
-    def readFloat(self):
+    def readFloat(self, message = ""):
+        self.printMessage(message)
         return float(raw_input())
     
     def printMessage(self, message):
@@ -58,7 +59,7 @@ class ConsoleInteractionTests(TestCase):
         
     def consoleMockForCircle(self, radius):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.circleShapeType)
-        when(self.consoleMock).readFloat().thenReturn(radius)
+        when(self.consoleMock).readFloat(self.shapeInput.circleRadiusMessage).thenReturn(radius)
 
     def consoleMockForRectangle(self, width, height):
         when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
@@ -68,13 +69,6 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
 
         verify(self.consoleMock).printMessage(self.shapeInput.message)
-
-    def testAsksForRadiusIfCircle(self):
-        self.consoleMockForCircle(100)
-        
-        self.shapeInput.askForShape()
-        
-        verify(self.consoleMock).printMessage(self.shapeInput.circleRadiusMessage)
 
     def testAsksForWidthIfRectangle(self):
         self.consoleMockForRectangle(100, 10)
