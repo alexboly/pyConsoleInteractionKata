@@ -80,9 +80,9 @@ class ConsoleInteractionTests(TestCase):
         verify(self.consoleMock, 2).readInt()
 
     def testPrintsCorrectRectangleArea(self):
-        when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType).thenReturn(100).thenReturn(100)
+        when(self.consoleMock).readString().thenReturn(self.shapeInput.rectangleShapeType)
+        when(self.consoleMock).readInt().thenReturn(100).thenReturn(100)
         
         self.shapeInput.askForShape()
         
-        verify(self.consoleMock).printMessage("Area is 10000")
-        
+        verify(self.consoleMock).printMessage("Area is 10000")        
