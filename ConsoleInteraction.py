@@ -19,17 +19,21 @@ class ShapeInput():
 
     def askForShape(self):
         shapeType = self.console.readString(self.message)
+
+        area = 0
         
         if shapeType == self.rectangleShapeType:
             width = self.console.readFloat(self.rectangleWidthMessage)
             height = self.console.readFloat(self.rectangleHeightMessage)
-            self.console.printMessage("Area is {0:.2f}".format(width * height))
+            area = width * height
             self.console.printMessage("Circumference is {0}".format(2 * (width + height)))
 
         if shapeType == self.circleShapeType:
             radius = self.console.readFloat(self.circleRadiusMessage)
-            self.console.printMessage("Area is {0:.2f}".format(3.14 * radius * radius))
+            area = 3.14 * radius * radius
             self.console.printMessage("Circumference is {0:.2f}".format(2 * 3.14 * radius))
+
+        self.console.printMessage("Area is {0:.2f}".format(area))
 
 class Console:
    
