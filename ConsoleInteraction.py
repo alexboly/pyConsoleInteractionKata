@@ -50,13 +50,9 @@ class ShapeInput():
     def __init__(self, console):
         self.console = console
 
-
     def readShapeDetails(self, shapeType):
-        if shapeType == Rectangle.rectangleShapeType:
-            shape = Rectangle.read(self.console)
-        if shapeType == Circle.circleShapeType:
-            shape = Circle.read(self.console)
-        return shape
+        isRectangle = shapeType == Rectangle.rectangleShapeType
+        return Rectangle.read(self.console) if isRectangle else Circle.read(self.console)
 
     def readShapeType(self):
         return self.console.readString(self.message)
