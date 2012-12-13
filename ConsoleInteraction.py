@@ -1,7 +1,6 @@
 # See https://sites.google.com/site/tddproblems/all-problems-1/Console-interaction for problem description
 from mockito import *
 from unittest.case import TestCase
-import math
 
 
 class ShapeInput():
