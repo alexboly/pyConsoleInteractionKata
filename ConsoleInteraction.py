@@ -75,14 +75,14 @@ class ShapeInput():
         shapeType = self.console.readString(self.message)
 
         if shapeType == Rectangle.rectangleShapeType:
-            rectangle = Rectangle.read(self.console)
-            area = rectangle.area()
-            circumference = rectangle.circumference()
+            shape = Rectangle.read(self.console)
+            area = shape.area()
+            circumference = shape.circumference()
 
         if shapeType == Circle.circleShapeType:
-            circle = Circle.read(self.console)
-            area = circle.area()
-            circumference = circle.circumference()
+            shape = Circle.read(self.console)
+            area = shape.area()
+            circumference = shape.circumference()
 
         self.console.printMessage("Area is {0:.2f}".format(area))
         self.console.printMessage("Circumference is {0:.2f}".format(circumference))
