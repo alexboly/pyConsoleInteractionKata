@@ -92,3 +92,10 @@ class ConsoleInteractionTests(TestCase):
         self.shapeInput.askForShape()
         
         verify(self.consoleMock).printMessage("Area is 31400.00")
+
+    def testPrintsSecondCorrectCircleArea(self):
+        self.consoleMockForCircle(200)
+        
+        self.shapeInput.askForShape()
+        
+        verify(self.consoleMock).printMessage("Area is 125600.00")
